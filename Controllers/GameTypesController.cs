@@ -6,61 +6,61 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using egolfWebApi.Data;
-using egolfWebApi.Models.Member;
+using egolfWebApi.Models.GameType;
 
 namespace egolfWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MembersController : ControllerBase
+    public class GameTypesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public MembersController(DataContext context)
+        public GameTypesController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/Members
+        // GET: api/GameTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+        public async Task<ActionResult<IEnumerable<GameType>>> GetGameTypes()
         {
-          if (_context.Members == null)
+          if (_context.GameTypes == null)
           {
               return NotFound();
           }
-            return await _context.Members.ToListAsync();
+            return await _context.GameTypes.ToListAsync();
         }
 
-        // GET: api/Members/5
+        // GET: api/GameTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Member>> GetMember(long id)
+        public async Task<ActionResult<GameType>> GetGameType(long id)
         {
-          if (_context.Members == null)
+          if (_context.GameTypes == null)
           {
               return NotFound();
           }
-            var member = await _context.Members.FindAsync(id);
+            var gameType = await _context.GameTypes.FindAsync(id);
 
-            if (member == null)
+            if (gameType == null)
             {
                 return NotFound();
             }
 
-            return member;
+            return gameType;
         }
 
-        // PUT: api/Members/5
+        // PUT: api/GameTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(long id, Member member)
+        public async Task<IActionResult> PutGameType(long id, GameType gameType)
         {
-            if (id != member.Id)
+            if (id != gameType.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(member).State = EntityState.Modified;
+            _context.Entry(gameType).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace egolfWebApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MemberExists(id))
+                if (!GameTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace egolfWebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Members
+        // POST: api/GameTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Member>> PostMember(Member member)
+        public async Task<ActionResult<GameType>> PostGameType(GameType gameType)
         {
-          if (_context.Members == null)
+          if (_context.GameTypes == null)
           {
-              return Problem("Entity set 'DataContext.Members'  is null.");
+              return Problem("Entity set 'DataContext.GameTypes'  is null.");
           }
-            _context.Members.Add(member);
+            _context.GameTypes.Add(gameType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMember", new { id = member.Id }, member);
+            return CreatedAtAction("GetGameType", new { id = gameType.Id }, gameType);
         }
 
-        // DELETE: api/Members/5
+        // DELETE: api/GameTypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMember(long id)
+        public async Task<IActionResult> DeleteGameType(long id)
         {
-            if (_context.Members == null)
+            if (_context.GameTypes == null)
             {
                 return NotFound();
             }
-            var member = await _context.Members.FindAsync(id);
-            if (member == null)
+            var gameType = await _context.GameTypes.FindAsync(id);
+            if (gameType == null)
             {
                 return NotFound();
             }
 
-            _context.Members.Remove(member);
+            _context.GameTypes.Remove(gameType);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool MemberExists(long id)
+        private bool GameTypeExists(long id)
         {
-            return (_context.Members?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.GameTypes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
