@@ -1,21 +1,22 @@
 using egolfWebApi.Data;
 using egolfWebApi.Extensions;
-using egolfWebApi.Models.Member;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
-
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
+    "/nlog.config"));
+
 builder.Services.ConfigureCors();
-builder.Services.ConfigureIISIntegration();
-// allow all origins
- 
+builder.Services.ConfigureIISIntegration(); // Configure IIS Integration
+builder.Services.ConfigureLoggerService();
+
 // Add services to the container.
-    
-builder.Services.AddControllers(); 
-// builder.Services.AddDbContext<MemberContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("MemberList"));
-builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllers();
+builder.Services.AddDbContext<DataContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
