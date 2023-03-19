@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ namespace egolfWebApi.Controllers
 
         // GET: api/Members
         [HttpGet]
+        [SuppressMessage("ReSharper.DPA", "DPA0006: Large number of DB commands")]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
         {
           if (_context.Members == null)
